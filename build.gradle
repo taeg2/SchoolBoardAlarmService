@@ -21,10 +21,18 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.jsoup:jsoup:1.17.2'
+
+    // 텔레그램 봇 핵심 라이브러리 및 웹훅 기능 포함
+    implementation 'org.telegram:telegrambots:6.9.7.1'
+    // 스프링 부트 환경에서 웹훅 URL 매핑을 쉽게 도와주는 스타터
+    implementation 'org.telegram:telegrambots-spring-boot-starter:6.9.7.1'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    runtimeOnly 'com.h2database:h2'
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
