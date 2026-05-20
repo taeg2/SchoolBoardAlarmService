@@ -4,14 +4,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 
 @Entity
 @Getter
 @Setter
 public class Univ {
+
+
     @Id
     @GeneratedValue
     @Column(name = "UNIV_ID")
@@ -22,6 +23,7 @@ public class Univ {
     private String URL;
 
     private Long latestPostNumber;
+
 
     public void updateLatestPostNumber(Long maxNumber) {
         latestPostNumber = maxNumber;

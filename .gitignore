@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### telegram token vlaue ###
+applicatoin-secret.yml
