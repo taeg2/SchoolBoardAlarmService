@@ -28,6 +28,7 @@ UserUniv newUserUniv = UserUniv.builder()
                 .build();
 ```
 UserUniv를 build 하는데 isActive를 같이 전달하지 않아서 오류가 발생함.
+DB에 값을 전달하지 않으면 자동으로 null로 들어간다는 사실을 까먹고 있었음.
 
 solution:
 ```java
@@ -38,8 +39,9 @@ UserUniv newUserUniv = UserUniv.builder()
                 .build();
 ```
 
-넣고 돌려보니까 바로 전송 잘 되는 걸 확인함.
 <img width="372" height="637" alt="image" src="https://github.com/user-attachments/assets/33d00a1a-8193-4c93-b3e2-24510558fb56" />
+
+넣고 돌려보니까 바로 전송 잘 되는 걸 확인함.
 
 **앞으로 할 일**
 1. iptime 공유기에 내 도메인 만들고 nginx 써서 https 프로토콜 생성
