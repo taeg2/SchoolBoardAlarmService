@@ -64,7 +64,7 @@ public class UserUnivRepositoryTest {
 
 
         //when
-        List<String> result = userUnivRepository.findChatIdsByUnivId(konkukUniv.getId());
+        List<Long> result = userUnivRepository.findChatIdsByUnivId(konkukUniv.getId());
 
         //then
         Assertions.assertThat(result).hasSize(2);

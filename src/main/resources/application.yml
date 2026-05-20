@@ -1,0 +1,9 @@
+telegram:
+  bot:
+    username: "MySchoolAlarm_bot"
+    token: ${TELEGRAM_BOT_TOKEN}
+    path: "/api/telegram"
+
+spring:
+  profiles:
+    include: secret

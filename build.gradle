@@ -23,10 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.jsoup:jsoup:1.17.2'
 
-    // 텔레그램 봇 핵심 라이브러리 및 웹훅 기능 포함
-    implementation 'org.telegram:telegrambots:6.9.7.1'
-    // 스프링 부트 환경에서 웹훅 URL 매핑을 쉽게 도와주는 스타터
-    implementation 'org.telegram:telegrambots-spring-boot-starter:6.9.7.1'
+    // 텔레그램 Spring Boot Starter (버전은 최신 안정화 버전에 맞게 사용)
+    implementation 'org.telegram:telegrambots-spring-boot-starter:6.8.0'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

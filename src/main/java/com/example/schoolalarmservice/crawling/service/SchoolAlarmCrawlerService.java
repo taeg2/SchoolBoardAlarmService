@@ -4,6 +4,8 @@ import com.example.schoolalarmservice.crawling.entity.Univ;
 import com.example.schoolalarmservice.crawling.repostiory.UnivRepository;
 import com.example.schoolalarmservice.crawling.repostiory.UserRepository;
 import com.example.schoolalarmservice.crawling.repostiory.UserUnivRepository;
+import com.example.schoolalarmservice.telegram.MySchoolAlarmWebhookBot;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -28,10 +30,11 @@ public class SchoolAlarmCrawlerService {
     private final UnivRepository univRepository;
     private final UserUnivRepository userUnivRepository;
     private final UserRepository userRepository;
-//    private final MyScholarshipWebhookBot telegramBot; // 직접 만드신 웹훅 봇 클래스 의존성 주입
+    private final MySchoolAlarmWebhookBot telegramBot; // 직접 만드신 웹훅 봇 클래스 의존성 주입
 
     @Transactional
-    // @Scheduled(cron = "0 0 9-18/3 * * MON-FRI") // MVP 테스트 후 스케줄러 활성화
+    @Scheduled(cron = "0 0 9-18/3 * * MON-FRI") // MVP 테스트 후 스케줄러 활성화
+//    @Scheduled(initialDelay = 5000, fixedDelay = 1000)
     public void crawlAndNotifyNewPosts() {
         log.info("정기 장학 게시판 크롤링 시작...");
 
@@ -86,20 +89,31 @@ public class SchoolAlarmCrawlerService {
 
                 // 4. 새로운 글이 있다면 알림 발송 및 DB 업데이트
                 if (!newPostMessages.isEmpty()) {
-                    // 과거 글부터 순서대로 보내기 위해 리스트 뒤집기 (선택 사항)
                     Collections.reverse(newPostMessages);
 
-                    // 해당 대학교를 구독 중인(isActive = true) 회원들의 Chat ID 목록 조회
-//                    List<String> chatIds = userUnivRepository.findChatIdsByUnivId(univ.getId());
-//
-//                    for (String messageText : newPostMessages) {
-//                        for (String chatId : chatIds) {
-//                            sendTelegramMessage(chatId, messageText);
-//                        }
-//                    }
+                    // 🔍 [디버깅용 로그 추가] 현재 어떤 학교 ID로 조회하는지, 크롤링된 글은 몇 개인지 확인
+                    log.info("▶️ [디버깅] 현재 크롤링된 학교 ID: {}, 총 메시지 개수: {}개", univ.getId(), newPostMessages.size());
+
+                    List<Long> chatIdsLong = userUnivRepository.findChatIdsByUnivId(univ.getId());
+
+                    // 🔍 [디버깅용 로그 추가] DB에서 찾아온 구독자 수 확인
+                    log.info("▶️ [디버깅] DB에서 조회된 구독자(ChatID) 수: {}개", chatIdsLong.size());
+
+                    List<String> chatIdsString = chatIdsLong.stream()
+                            .map(String::valueOf)
+                            .toList();
+
                     for (String messageText : newPostMessages) {
-                        // 원래는 텔레그램을 보내는 자리지만, 테스트를 위해 콘솔에 출력!
-                        log.info("🔔 [가상 텔레그램 발송] \n{}", messageText);
+                        for (String chatId : chatIdsString) {
+                            sendTelegramMessage(chatId, messageText);
+
+                            // ✨ [추가] 텔레그램 API 도배 방지를 위해 0.5초 대기
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
                     }
 
                     // 5. 대학교의 최신 게시글 번호 DB 업데이트
@@ -117,14 +131,14 @@ public class SchoolAlarmCrawlerService {
     }
 
     // 텔레그램 API 호출 래핑 메서드
-//    private void sendTelegramMessage(String chatId, String text) {
-//        SendMessage message = new SendMessage();
-//        message.setChatId(chatId);
-//        message.setText(text);
-//        try {
-//            telegramBot.execute(message);
-//        } catch (TelegramApiException e) {
-//            log.error("텔레그램 발송 실패 - ChatId: {}, Reason: {}", chatId, e.getMessage());
-//        }
-//    }
+    private void sendTelegramMessage(String chatId, String text) {
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId);
+        message.setText(text);
+        try {
+            telegramBot.execute(message);
+        } catch (TelegramApiException e) {
+            log.error("텔레그램 발송 실패 - ChatId: {}, Reason: {}", chatId, e.getMessage());
+        }
+    }
 }
