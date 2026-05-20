@@ -18,6 +18,7 @@
 
 <img width="366" height="174" alt="image" src="https://github.com/user-attachments/assets/a08bf062-456e-44d3-8592-ee511ea90fec" />
 <img width="363" height="99" alt="image" src="https://github.com/user-attachments/assets/fd5e1615-30ba-451b-9aee-b313d70e915d" />
+
 error: 학교를 분명 입력 했는데 새로운 게시글에 대한 연락이 오지 않는 오류 발생
  
 ```java
@@ -36,6 +37,7 @@ UserUniv newUserUniv = UserUniv.builder()
                 .isActive(UnivStatus.ENROLLED)
                 .build();
 ```
+
 넣고 돌려보니까 바로 전송 잘 되는 걸 확인함.
 <img width="372" height="637" alt="image" src="https://github.com/user-attachments/assets/33d00a1a-8193-4c93-b3e2-24510558fb56" />
 
