@@ -1,9 +1,25 @@
+spring:
+  application:
+    name: SchoolAlarmService # ✨ 기존 properties에 있던 앱 이름을 여기로 통합!
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/school_alarm?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: ${MYSQL_PASSWORD} # 인텔리제이 환경변수에 등록한 값 사용
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 테이블 자동 생성/갱신
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true # 쿼리 설명 주석 보기 활성화
+        dialect: org.hibernate.dialect.MySQLDialect
+
 telegram:
   bot:
-    username: "MySchoolAlarm_bot"
+    username: ${TELEGRAM_BOT_NAME}
     token: ${TELEGRAM_BOT_TOKEN}
     path: "/api/telegram"
-
-spring:
-  profiles:
-    include: secret
