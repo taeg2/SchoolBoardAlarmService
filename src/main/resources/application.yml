@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create # 테이블 자동 생성/갱신
+      ddl-auto: update # 테이블 자동 생성/갱신
     properties:
       hibernate:
         show_sql: true
