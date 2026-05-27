@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # 1. 데이터베이스 컨테이너
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    container_name: school_alarm_db
+    restart: always # 서버가 껐다 켜져도 자동 실행
+    environment:
+      MYSQL_DATABASE: school_alarm
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD} # .env 파일에서 비밀번호를 읽어옵니다.
+      TZ: Asia/Seoul
+    volumes:
+      - db_data:/var/lib/mysql # DB 데이터가 날아가지 않도록 미니 PC 하드에 영구 저장
+
+  # 2. 스프링 부트 애플리케이션 컨테이너
+  app:
+    image: taeg4/school-alarm:v2 # 나중에 빌드할 내 스프링 부트 이미지 이름
+    container_name: school_alarm_app
+    restart: always
+    depends_on:
+      - db # DB가 먼저 켜진 후에 앱이 켜지도록 순서 보장
+    environment:
+      # ✨ [핵심] 컨테이너 내부 통신이므로 localhost가 아니라 서비스 이름인 'db'를 씁니다.
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/school_alarm?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TELEGRAM_BOT_NAME: ${TELEGRAM_BOT_NAME}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TZ: Asia/Seoul
+    ports:
+      - "8080:8080"
+
+  # 3. 대문 역할 및 HTTPS 담당 (Nginx)
+  nginx:
+    image: nginx:latest
+    container_name: school_alarm_nginx
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443" # 👈 HTTPS용 443 포트도 확실하게 열려있는지 확인!
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      # 주석 처리하려던 부분 대신, 실제 우분투의 Let's Encrypt 경로를 바로 꽂아줍니다 (읽기 전용:ro)
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+
+# 도커가 관리하는 물리적 하드디스크 공간 선언
+volumes:
+  db_data:
