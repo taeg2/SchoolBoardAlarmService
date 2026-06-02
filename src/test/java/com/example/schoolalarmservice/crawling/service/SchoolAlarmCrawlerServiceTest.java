@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SchoolAlarmCrawlerServiceTest {
 
     @Autowired
-    SchoolAlarmCrawlerService crawlerService;
+    KonkukSchoolAlarmCrawlerService crawlerService;
 
     @Autowired
     UnivRepository univRepository;
