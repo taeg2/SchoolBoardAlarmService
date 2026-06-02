@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SchoolAlarmCrawlerService {
+public class KonkukSchoolAlarmCrawlerService {
 
     private final UnivRepository univRepository;
     private final UserUnivRepository userUnivRepository;
