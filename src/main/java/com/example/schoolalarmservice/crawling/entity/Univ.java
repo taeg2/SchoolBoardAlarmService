@@ -11,8 +11,6 @@ import lombok.*;
 @Getter
 @Setter
 public class Univ {
-
-
     @Id
     @GeneratedValue
     @Column(name = "UNIV_ID")
