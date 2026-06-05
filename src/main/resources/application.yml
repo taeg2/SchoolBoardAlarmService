@@ -1,6 +1,8 @@
 spring:
   application:
     name: SchoolAlarmService # ✨ 기존 properties에 있던 앱 이름을 여기로 통합!
+  profiles:
+    active: dev
 
   datasource:
     url: jdbc:mysql://localhost:3306/school_alarm?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false

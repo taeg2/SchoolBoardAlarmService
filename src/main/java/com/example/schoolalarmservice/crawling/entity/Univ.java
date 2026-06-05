@@ -1,9 +1,7 @@
 package com.example.schoolalarmservice.crawling.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.schoolalarmservice.crawling.model.UnivCode;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -23,6 +21,9 @@ public class Univ {
     private String URL;
 
     private Long latestPostNumber;
+
+    @Enumerated(value = EnumType.STRING)
+    private UnivCode univCode;
 
 
     public void updateLatestPostNumber(Long maxNumber) {
