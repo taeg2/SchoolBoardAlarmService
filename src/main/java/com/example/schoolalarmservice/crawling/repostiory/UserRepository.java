@@ -11,6 +11,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByTeleId(Long teleId);
 
-
     Optional<User> findByTeleId(Long teleId);
+
+    Boolean existsBySlackId(String slackUserId);
+
+    Optional<User> findBySlackId(String slackUserId);
 }

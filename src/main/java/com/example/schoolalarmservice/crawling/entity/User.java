@@ -1,5 +1,6 @@
 package com.example.schoolalarmservice.crawling.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,5 +17,9 @@ public class User {
     @Column(name = "USER_ID")
     private Long id;
 
+    @Column(unique = true)
     private Long teleId;
+
+    @Column(unique = true)
+    private String slackId;
 }
