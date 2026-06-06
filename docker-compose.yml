@@ -7,23 +7,30 @@ services:
     ports:
       - "3306:3306"
     container_name: school_alarm_db
-    restart: always # 서버가 껐다 켜져도 자동 실행
+    restart: always
     environment:
       MYSQL_DATABASE: school_alarm
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD} # .env 파일에서 비밀번호를 읽어옵니다.
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       TZ: Asia/Seoul
     volumes:
-      - db_data:/var/lib/mysql # DB 데이터가 날아가지 않도록 미니 PC 하드에 영구 저장
+      - db_data:/var/lib/mysql
+    # 🌟 여기에 헬스체크 추가! (MySQL이 살아있는지 5초마다 체크)
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # 2. 스프링 부트 애플리케이션 컨테이너
   app:
-    image: taeg4/school-alarm:v2 # 나중에 빌드할 내 스프링 부트 이미지 이름
+    image: taeg4/school-alarm:v3
     container_name: school_alarm_app
     restart: always
+    # 🌟 무조건 DB가 완전히 건강해진(healthy) 후에 켜지도록 조건 세분화!
     depends_on:
-      - db # DB가 먼저 켜진 후에 앱이 켜지도록 순서 보장
+      db:
+        condition: service_healthy
     environment:
-      # ✨ [핵심] 컨테이너 내부 통신이므로 localhost가 아니라 서비스 이름인 'db'를 씁니다.
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/school_alarm?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TELEGRAM_BOT_NAME: ${TELEGRAM_BOT_NAME}
@@ -50,3 +57,5 @@ services:
 # 도커가 관리하는 물리적 하드디스크 공간 선언
 volumes:
   db_data:
+    external: true
+    name: taeg04_db_data
