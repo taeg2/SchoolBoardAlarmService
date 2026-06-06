@@ -1,6 +1,7 @@
 package com.example.schoolalarmservice.slack;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,27 +12,28 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SlackWebhookController {
 
+    // 슬랙 앱 설정에서 Slash Command Request URL을 이 주소로 설정해야 합니다. (예: /api/slack/command)
     private final SlackCommandService slackCommandService;
 
-    // 슬랙 앱 설정에서 Slash Command Request URL을 이 주소로 설정해야 합니다. (예: /api/slack/command)
     @PostMapping(value = "/api/slack/command", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Map<String, String> onCommandReceived(@RequestParam Map<String, String> payload) {
+    public Map<String, String> onCommandReceived(SlackSlashCommandDto requestDto) {
 
-        // 슬랙이 보내는 데이터 중 필요한 부분 추출
-        String slackUserId = payload.get("user_id"); // 예: U0123ABCD
-        String command = payload.get("command");     // 예: /add
-        String text = payload.get("text");           // 예: 건국대학교 (명령어 뒤에 붙은 텍스트)
+        log.info("슬랙 요청 수신: {}", requestDto); // record는 toString()도 자동으로 예쁘게 출력해줍니다.
 
-        // 서비스 로직 실행 후 결과 텍스트 받아오기
+        // 🚨 주의: record는 Getter 이름이 'get'으로 시작하지 않습니다. 필드명과 동일한 메서드를 호출합니다.
+        String slackUserId = requestDto.user_id();
+        String command = requestDto.command();
+        String text = requestDto.text();
+
         String responseText = slackCommandService.handleCommand(slackUserId, command, text);
 
-        // 슬랙이 이해할 수 있는 JSON 형태로 응답 (텔레그램의 SendMessage 역할)
         Map<String, String> response = new HashMap<>();
-        response.put("response_type", "ephemeral"); // ephemeral: 나에게만 보이는 메시지, in_channel: 모두에게 보이는 메시지
+        response.put("response_type", "ephemeral");
         response.put("text", responseText);
 
-        return response; // 텔레그램처럼 이 return 값이 바로 슬랙 유저에게 텍스트로 날아갑니다.
+        return response;
     }
 }
