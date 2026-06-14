@@ -2,13 +2,12 @@
 학교 게시판 알람 서비스
 
 
-
+---
 **2026-05-20**
 ## 학교 데이터 가져오기 성공 & 테스트 통과!
 <img width="614" height="251" alt="image" src="https://github.com/user-attachments/assets/764a99be-c122-4103-9443-2217eb55c2cd" />
 
-
-
+---
 **2026-05-21**
 ## 텔레그램과 내 local 서버 연결 성공
 **오늘 한 일**
@@ -46,3 +45,25 @@ UserUniv newUserUniv = UserUniv.builder()
 **앞으로 할 일**
 1. iptime 공유기에 내 도메인 만들고 nginx 써서 https 프로토콜 생성
 2. DB H2 -> MySQL로 교체
+
+---
+2026.06.14
+## iptime 공유기 포트 포워딩, 고정 주소로 mini pc에 접근 허용
+
+MVP는 이미 전부 개발 끝났기 때문에 배포만 하면 끝.
+iptime 공유기 포트 포워딩, 고정 ip 사용 -> 외부에서 미니 pc로 보내느 요청 수용 가능하게 하고 미니pc ip 고정함.
+iptime 공유기 도메인 사용 할려다가 (u+ -> iptime)으로 들어오는 이중 공유기 시스템이라 iptime 도메인으로는 외부 ip로 접근이 불가능함.
+따라서 duckdns를 사용해서 외부 ip로 접근 가능하도록 dns 시스템 구축
+
+미니 pc 서버 돌리기 위해 docker 설치하고 docker-compose.yml, dockerfile, nginx.conf, .env 파일 만들어서 배포 준비 끝.
+
+**배포 하던 중 발생한 문제**
+window의 WSL을 사용해서 docker를 돌릴려고 하던 도중 docker 인증 때문에 window pc로는 배포가 불가능 함.
+따라서 mini pc의 os 교체 진행 window -> ubuntu로 교체
+docker 설치후 `docker-compose up -d` 했더니 잘 돌아감.
+
+SSH를 사용해서 리눅스 pc에 원격 접속 후 docker 파일과, jar 파일 넘겨 받아서 docker compose up -d 실행 작동이 잘 되는 것을 확인함.
+
+
+## 다른 학교도 추가적으로 크롤링 하기 위해 전략 패턴 도입
+
