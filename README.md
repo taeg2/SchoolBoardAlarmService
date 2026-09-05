@@ -67,3 +67,9 @@ SSH를 사용해서 리눅스 pc에 원격 접속 후 docker 파일과, jar 파�
 
 ## 다른 학교도 추가적으로 크롤링 하기 위해 전략 패턴 도입
 
+<img width="1170" height="586" alt="KakaoTalk_20260905_224334422" src="https://github.com/user-attachments/assets/77f8277b-212f-444b-a403-dffb647efdac" />
+<img width="1170" height="290" alt="KakaoTalk_20260905_224334422_04" src="https://github.com/user-attachments/assets/49f4ff18-cc45-4070-9e27-4987e71434d2" />
+<img width="1170" height="376" alt="KakaoTalk_20260905_224334422_03" src="https://github.com/user-attachments/assets/63a6b8fc-8870-4204-9b9f-a00a2fffa896" />
+<img width="1170" height="326" alt="KakaoTalk_20260905_224334422_02" src="https://github.com/user-attachments/assets/de2c25c1-d0a5-424c-a195-d5b25743947e" />
+<img width="1170" height="304" alt="KakaoTalk_20260905_224334422_01" src="https://github.com/user-attachments/assets/1e9f7a9b-2c60-4608-be35-dbd9a3542c0d" />
+
