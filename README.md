@@ -45,6 +45,7 @@ DB에 등록되지 않은 학교 이름을 입력하면, 조용히 실패하는 
 - 학교를 추가할 때는 새로운 `UnivCrawlingStrategy` 구현체만 추가하면 되므로 확장에 용이함
 
 ## 기술 스택
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/50371017-0567-4c53-b76f-52b7ab385980" />
 
 - Java 17, Spring Boot
 - Spring Data JPA, MySQL
